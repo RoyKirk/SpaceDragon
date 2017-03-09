@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour {
     public Transform pivot;
     public GameObject reticle;
     public GameObject playerCamera;
+    public GameObject bullet;
     public float cameraSpeed = 2;
     public float retMaxDis = 4;
     public float gravity = 1;
@@ -74,6 +75,8 @@ public class PlayerMovement : MonoBehaviour {
             rb2D.velocity = rb2D.velocity.normalized * terminalVelocity;
         }
 
+
+
         if (reticle.transform.localPosition.magnitude <= retMaxDis)
         {
             reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.x + player.GetAxis("Aim Horizontal"), reticle.transform.localPosition.y + player.GetAxis("Aim Vertical"), reticle.transform.localPosition.z);
@@ -96,6 +99,12 @@ public class PlayerMovement : MonoBehaviour {
         else
         {
             playerCamera.transform.localPosition = midPoint;
+        }
+
+        if (player.GetButtonDown("Fire"))
+        {
+            GameObject temp = (GameObject)(Instantiate(bullet, transform.position, transform.rotation));
+            temp.transform.up = new Vector3(reticle.transform.localPosition.normalized.x, reticle.transform.localPosition.normalized.y, 0);
         }
 
     }
