@@ -67,6 +67,7 @@ public class PlayerMovement : MonoBehaviour {
         if (rb2D.velocity.magnitude <= terminalVelocity)
         {
             rb2D.AddForce(transform.right * player.GetAxis("Move Horizontal") * moveSpeed);
+            rb2D.AddForce(transform.up * player.GetAxis("Move Vertical") * moveSpeed);
         }
         else
         {
@@ -86,15 +87,15 @@ public class PlayerMovement : MonoBehaviour {
             reticle.transform.localPosition = reticle.transform.localPosition.normalized * retMaxDis;
         }
 
-
         Vector3 midPoint = reticle.transform.localPosition.normalized * reticle.transform.localPosition.magnitude / 2;
+        midPoint = new Vector3(midPoint.x, midPoint.y, playerCamera.transform.localPosition.z);
         if ((midPoint - playerCamera.transform.localPosition).magnitude > 0)
         {
-            playerCamera.transform.localPosition += reticle.transform.localPosition.normalized * cameraSpeed;
+            playerCamera.transform.localPosition += (midPoint - playerCamera.transform.localPosition) * cameraSpeed;
         }
         else
         {
-            playerCamera.transform.localPosition = new Vector3(midPoint.x, midPoint.y, playerCamera.transform.localPosition.z);
+            playerCamera.transform.localPosition = midPoint;
         }
 
     }
