@@ -34,6 +34,14 @@ public class PlayerMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        //Fire bullet
+        if (player.GetButtonDown("Fire"))
+        {
+            GameObject temp = (GameObject)(Instantiate(bullet, transform.position, transform.rotation));
+            Vector3 direction = reticle.transform.position - transform.position;
+            temp.transform.up = new Vector3(direction.normalized.x, direction.normalized.y, 0);
+        }
+
         Vector3 downDirection = pivot.position - transform.position;
         downDirection.Normalize();
         transform.up = -downDirection;
@@ -99,12 +107,6 @@ public class PlayerMovement : MonoBehaviour {
         else
         {
             playerCamera.transform.localPosition = midPoint;
-        }
-
-        if (player.GetButtonDown("Fire"))
-        {
-            GameObject temp = (GameObject)(Instantiate(bullet, transform.position, transform.rotation));
-            temp.transform.up = new Vector3(reticle.transform.localPosition.normalized.x, reticle.transform.localPosition.normalized.y, 0);
         }
 
     }
