@@ -6,6 +6,9 @@ public class BlockScript : MonoBehaviour
     public int typeValue = 0;
     public float HP = 1;
 
+    public GameObject particleEffect;
+    public GameObject pickUpObj;
+
     public Material[] blockTypeMats;
 
 
@@ -13,6 +16,7 @@ public class BlockScript : MonoBehaviour
     {
         if(HP <= 0)
         {
+            Instantiate(pickUpObj, transform.position, Quaternion.identity);
             //give resource to player
             Destroy(gameObject);
         }
@@ -42,5 +46,8 @@ public class BlockScript : MonoBehaviour
     public void takeDMG(float dmg)
     {
         HP -= dmg;
+        Instantiate(particleEffect, transform.position, Quaternion.identity);
+        //instantiate a particle effect.
+        //drop a pickup when hp <= 0
     }
 }

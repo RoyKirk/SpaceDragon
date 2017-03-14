@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Rewired;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -25,6 +26,10 @@ public class PlayerMovement : MonoBehaviour {
     private Player player;
     public float moveSpeed = 4;
     public float terminalVelocity = 1;
+    public int blockCount = 0;
+    public Text scoreText;
+    public float fireTime = 0.1f;
+    float fireTimer = 0;
 
     // Use this for initialization
     void Start () {
@@ -38,9 +43,10 @@ public class PlayerMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        fireTimer += Time.deltaTime;
+        scoreText.text = blockCount.ToString();
         //Fire bullet
-        if (player.GetButtonDown("Fire"))
+        if (player.GetButton("Fire") && fireTimer>=fireTime)
         {
             GameObject temp = (GameObject)(Instantiate(bullet, bulletSpawn.transform.position, transform.rotation));
             GameObject temp2 = (GameObject)(Instantiate(muzzleFlash, bulletSpawn.transform.position, transform.rotation));
@@ -49,6 +55,7 @@ public class PlayerMovement : MonoBehaviour {
             temp.transform.up = new Vector3(direction.normalized.x, direction.normalized.y, 0);
             temp.GetComponent<Rigidbody2D>().velocity = rb2D.velocity;//.magnitude * temp.transform.up;
             rb2D.AddForce(-direction * gunRecoil);
+            fireTimer = 0;
         }
 
         Vector3 downDirection = pivot.position - transform.position;
