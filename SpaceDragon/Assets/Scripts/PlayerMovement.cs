@@ -11,6 +11,10 @@ public class PlayerMovement : MonoBehaviour {
     public GameObject reticle;
     public GameObject playerCamera;
     public GameObject bullet;
+    public GameObject bulletSpawn;
+    public GameObject gun;
+    public GameObject muzzleFlash;
+    public float gunRecoil = 1;
     public float cameraSpeed = 2;
     public float retMaxDis = 4;
     public float gravity = 1;
@@ -38,10 +42,13 @@ public class PlayerMovement : MonoBehaviour {
         //Fire bullet
         if (player.GetButtonDown("Fire"))
         {
-            GameObject temp = (GameObject)(Instantiate(bullet, transform.position, transform.rotation));
+            GameObject temp = (GameObject)(Instantiate(bullet, bulletSpawn.transform.position, transform.rotation));
+            GameObject temp2 = (GameObject)(Instantiate(muzzleFlash, bulletSpawn.transform.position, transform.rotation));
+            temp2.transform.parent = bulletSpawn.transform;
             Vector3 direction = reticle.transform.position - transform.position;
             temp.transform.up = new Vector3(direction.normalized.x, direction.normalized.y, 0);
             temp.GetComponent<Rigidbody2D>().velocity = rb2D.velocity;//.magnitude * temp.transform.up;
+            rb2D.AddForce(-direction * gunRecoil);
         }
 
         Vector3 downDirection = pivot.position - transform.position;
@@ -91,8 +98,10 @@ public class PlayerMovement : MonoBehaviour {
         //float heightError = floatHeight - distance;
         //float force = liftForce * heightError - rb2D.velocity.y * damping;
         //}
-
-        rb2D.AddForce(downDirection * gravity);
+        if (player.GetAxis("Move Horizontal") == 0 && player.GetAxis("Move Vertical") == 0)
+        {
+            rb2D.AddForce(downDirection * gravity);
+        }
         
         //Movement with Terminal Velocity
         if (rb2D.velocity.magnitude <= terminalVelocity)
@@ -118,6 +127,11 @@ public class PlayerMovement : MonoBehaviour {
         {
             reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x * retMaxDis, reticle.transform.localPosition.normalized.y * retMaxDis, reticle.transform.localPosition.z);
         }
+
+        //Gun Position
+        gun.transform.localPosition = reticle.transform.localPosition.normalized * gun.transform.localPosition.magnitude;
+        gun.transform.forward = reticle.transform.localPosition.normalized;
+
 
         //Camera Movement
         Vector3 midPoint = reticle.transform.localPosition.normalized * reticle.transform.localPosition.magnitude / 2;
