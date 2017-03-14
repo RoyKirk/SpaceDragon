@@ -137,7 +137,8 @@ public class PlayerMovement : MonoBehaviour {
 
         //Gun Position
         gun.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x, reticle.transform.localPosition.normalized.y, 0) *0.5f;
-        gun.transform.forward = new Vector3(reticle.transform.localPosition.normalized.x, reticle.transform.localPosition.normalized.y, 0);
+        Vector3 gunDir = (reticle.transform.position - transform.position).normalized;
+        gun.transform.forward = new Vector3(gunDir.x, gunDir.y, 0);
 
 
         //Camera Movement
