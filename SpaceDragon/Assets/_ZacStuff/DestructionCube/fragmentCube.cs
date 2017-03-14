@@ -18,7 +18,7 @@ public class fragmentCube : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        iterationVector = (transform.position - (transform.localScale / 2) + fragmentObj.transform.localScale / 2);
+        iterationVector = new Vector3(transform.position.x - (transform.localScale.x / 2) + fragmentObj.transform.localScale.x / fragmentPieces / 2, transform.position.y - (transform.localScale.y / 2) + fragmentObj.transform.localScale.y / fragmentPieces / 2, transform.position.z);// - (transform.localScale / 2) + fragmentObj.transform.localScale / 2);
         iterationScale = fragmentObj.transform.localScale.x;
 
         //Fragment();
@@ -46,8 +46,12 @@ public class fragmentCube : MonoBehaviour
         {
             for(int y = 0; y < fragmentPieces;y++)
             {
-                frag = Instantiate(fragmentObj, new Vector3(iterationVector.x + (x*2), iterationVector.y + (y/5), iterationVector.z), Quaternion.identity) as GameObject;
+                frag = Instantiate(fragmentObj) as GameObject;
+               // frag.transform.localScale = gameObject.transform.localScale;
+                frag.transform.localScale = new Vector3(frag.transform.localScale.x / fragmentPieces, frag.transform.localScale.y / fragmentPieces, frag.transform.localScale.z);
+                frag.transform.position = new Vector3(iterationVector.x + (fragmentObj.transform.localScale.x/fragmentPieces * x), iterationVector.y + (fragmentObj.transform.localScale.y/fragmentPieces * y), iterationVector.z);
                 frag.GetComponent<BlockScript>().ChangeType(typeValue);
+                
             }
         }
         Destroy(gameObject);

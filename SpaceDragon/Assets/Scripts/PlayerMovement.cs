@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour {
     public float cameraSpeed = 2;
     public float retMaxDis = 4;
     public float gravity = 1;
+    public float atmosphereRadius = 2;
     bool onGround = false;
     Rigidbody2D rb2D;
     Vector3 pos;
@@ -46,7 +47,7 @@ public class PlayerMovement : MonoBehaviour {
         downDirection.Normalize();
         transform.up = -downDirection;
         //Ground check
-        RaycastHit2D groundCheck = Physics2D.Raycast(transform.position + downDirection, new Vector2(downDirection.x,downDirection.y));
+        RaycastHit2D groundCheck = Physics2D.Raycast(transform.position + downDirection, new Vector2(downDirection.x,downDirection.y),atmosphereRadius);
         Debug.DrawRay(transform.position, 100*downDirection);
         if (groundCheck.collider != null)
         {
@@ -64,15 +65,35 @@ public class PlayerMovement : MonoBehaviour {
             onGround = false;
         }
 
-        //Gravity
-        if (!onGround)
+        //Atmosphere
+        if(groundCheck.collider != null && player.GetAxis("Move Horizontal")== 0 && player.GetAxis("Move Vertical") == 0)
         {
-            //float distance = Mathf.Abs(groundCheck.point.y - transform.position.y);
-            //float heightError = floatHeight - distance;
-            //float force = liftForce * heightError - rb2D.velocity.y * damping;
-            
+            if(rb2D.velocity.magnitude <= 0.1)
+            {
+                rb2D.velocity.Set(0,0);
+            }
+            else
+            {
+                rb2D.AddForce(-rb2D.velocity.normalized * 5f);
+                //rb2D.velocity *= 0.2f;
+                //rb2D.velocity = new Vector2(rb2D.velocity.x *0.2f, rb2D.velocity.y);
+            }            
         }
-        rb2D.AddForce(downDirection * gravity);
+
+        //Gravity
+        //if (!onGround)
+        //{
+        //float distance = Mathf.Abs(groundCheck.point.y - transform.position.y);
+        //float heightError = floatHeight - distance;
+        //float force = liftForce * heightError - rb2D.velocity.y * damping;
+        //}
+
+        if (player.GetAxis("Move Horizontal") == 0 && player.GetAxis("Move Vertical") == 0)
+        {
+            rb2D.AddForce(downDirection * gravity);
+        }
+
+        //Movement with Terminal Velocity
         if (rb2D.velocity.magnitude <= terminalVelocity)
         {
             rb2D.AddForce(transform.right * player.GetAxis("Move Horizontal") * moveSpeed);
@@ -83,8 +104,7 @@ public class PlayerMovement : MonoBehaviour {
             rb2D.velocity = rb2D.velocity.normalized * terminalVelocity;
         }
 
-
-
+        //Aiming
         if (reticle.transform.localPosition.magnitude <= retMaxDis)
         {
             reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.x + player.GetAxis("Aim Horizontal"), reticle.transform.localPosition.y + player.GetAxis("Aim Vertical"), reticle.transform.localPosition.z);

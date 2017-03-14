@@ -4,6 +4,8 @@ using System.Collections;
 public class MineralGen : MonoBehaviour
 {
     public GameObject[] planet;
+    public GameObject planetCore;
+    public float MaxGenDistanceFromCore;
 
     public int numberOfClusters;
     public int minDistanceBetweenClusters;
@@ -53,7 +55,7 @@ public class MineralGen : MonoBehaviour
                 {
 
                     clusterStart[i] = planet[rand];
-                    clusterStart[i].GetComponent<fragmentCube>().typeValue = 1;
+                    clusterStart[i].GetComponent<fragmentCube>().ChangeType(1);
                 }
             }
             checkCounter = 0;
@@ -61,129 +63,130 @@ public class MineralGen : MonoBehaviour
         for(int x = 0; x < clusterStart.Length; x++)
         {
             currentStartNode = clusterStart[x];
-            clusterStart[x].GetComponent<fragmentCube>().typeValue = 1;
-            ClusterSpread(clusterStart[x], 3);
+            clusterStart[x].GetComponent<fragmentCube>().ChangeType(1);
+            ClusterSpread(clusterStart[x], CLUSTERSPREAD);
         }
+        CleanupGEN();
         //GenClusterSizes();
     }
 
     void CHECK(int x)
     {
-        if (clusterStart[x] != planet[rand])
+        float dis = Vector3.Distance(planet[rand].transform.position, planetCore.transform.position);
+        if (clusterStart[x] != planet[rand] && dis <= MaxGenDistanceFromCore)
         {
             //
             checkCounter++;
         }
         else// add check distance;
         {
-            Debug.Log("hit a duplicate");
             rand = Random.Range(0, planet.Length);
             CHECK(x);
         }
     }
-
-    void GenClusterSizes()//re-write this so it works and makes sense, we need it to divide the total between each cluster randomly within their min max limits.
-    {
-        //currentTotalResources = Random.Range(minTotalResources, maxTotalResources);
-        //
-        //for(int i = 0; i < currentClusterResources.Length;i++)
-        //{
-        //    currentClusterResources[i] = Random.Range(minClusterResource, maxClusterResource);
-        //    currentTotalResources -= currentClusterResources[i];
-        //    if(i == currentClusterResources.Length - 1)
-        //    {
-        //        if(currentTotalResources <= maxClusterResource && currentTotalResources >= minClusterResource)
-        //        {
-        //            currentClusterResources[i] = currentTotalResources;
-        //        }
-        //        else
-        //        {
-        //            Debug.Log("it doesnt fit");
-        //        }
-        //    }
-        //}
-    }
-
-    //int lastDir;
-
     
     int iterated;
+    int lastDir = -1;
 
     //calls self until all cluster has been spread;
     void ClusterSpread(GameObject thisObj, int spreadValue)
     {
         
-        if (iterated >= 200)
-        {
-            iterated = 0;
-            ClusterSpread(clusterStart[Random.Range(0, clusterStart.Length)], spreadValue);
-            
-        }
-        if (spreadValue > 0)//still needs to spread more
-        {
-            int direction = Random.Range(0, 3);//choose a side to check
-            //if (direction == lastDir)
-            //{
-            //    direction = Random.Range(0, 3);
-            //}
-            //lastDir = direction;
-            switch (direction)
+         if (iterated >= 200)
+         {
+             iterated = 0;
+             ClusterSpread(clusterStart[Random.Range(0, clusterStart.Length)], spreadValue);
+             Debug.Log("got to iterated");
+         }
+         if (spreadValue > 0)
+         {
+             int direction = Random.Range(0, 3);//choose a side to check
+            if(direction == lastDir)
             {
-                case 0://up
-                    RaycastSides(thisObj, Vector2.up, spreadValue);
-                    break;
-                case 1://down
-                    RaycastSides(thisObj, Vector2.down, spreadValue);
-                    break;
-                case 2://left
-                    RaycastSides(thisObj, Vector2.left, spreadValue);
-                    break;
-                case 3://right
-                    RaycastSides(thisObj, Vector2.right, spreadValue);
-                    break;
+                direction = Random.Range(0, 3);
             }
-        }
+            lastDir = direction;
+             switch (direction)
+             {
+                 case 0://up
+                     RaycastSides(thisObj, Vector2.up, spreadValue);
+                     break;
+                 case 1://down
+                     RaycastSides(thisObj, Vector2.down, spreadValue);
+                     break;
+                 case 2://left
+                     RaycastSides(thisObj, Vector2.left, spreadValue);
+                     break;
+                 case 3://right
+                     RaycastSides(thisObj, Vector2.right, spreadValue);
+                     break;
+             }
+         }
+        
         
     }
 
     int RaycastSides(GameObject currentObj, Vector2 direction, int spreadValue)
     {
-        RaycastHit2D hit = Physics2D.Raycast(currentObj.transform.position, direction, 1f);
-        
+        currentObj.layer = 2;
+        RaycastHit2D hit = Physics2D.Raycast(currentObj.transform.position, direction, 100);
         if(hit != false)
         {
             if (hit.collider.gameObject.tag == "Block")
             {
-                //hit something
-                fragmentCube blockType = hit.collider.gameObject.GetComponent<fragmentCube>();
-                if (blockType != null)
+
+                float dis = Vector3.Distance(hit.transform.position, planetCore.transform.position);
+                if (dis > MaxGenDistanceFromCore)
                 {
-                    if (blockType.typeValue == 0)
+                    //try again on a different iteration
+                    ClusterSpread(currentObj, spreadValue);
+                    return 0;
+                }
+                else
+                {
+                    //hit something
+                    fragmentCube blockType = hit.collider.gameObject.GetComponent<fragmentCube>();
+                    if (blockType != null)
                     {
-                        //change the blocktype and keep going
-                        currentObj.GetComponent<fragmentCube>().ChangeType(newBlockType);
-                        spreadValue--;
+                        if (blockType.typeValue == 0)
+                        {
+                            //change the blocktype and keep going
+                            currentObj.GetComponent<fragmentCube>().ChangeType(newBlockType);
+                            spreadValue--;
 
-                        iterated = 0;
+                            iterated = 0;
 
-                        ClusterSpread(hit.collider.gameObject, spreadValue);
-                        return 0;
-                    }
-                    else
-                    {
-                        iterated++;
-                        ClusterSpread(hit.collider.gameObject, spreadValue);
-                        return 0;
+                            ClusterSpread(hit.collider.gameObject, spreadValue);
+                            return 0;
+                        }
+                        else
+                        {
+                            iterated++;
+                            ClusterSpread(hit.collider.gameObject, spreadValue);
+                            return 0;
+                        }
                     }
                 }
+                
             }
         }
         else
         {
-            Debug.Log("hit nothing");
             ClusterSpread(currentObj, spreadValue);
             return 0;
         }
+        //currentObj.layer = 0;
         return -1;
+    }
+
+    GameObject[] Blocks;
+
+    void CleanupGEN()
+    {
+        Blocks = GameObject.FindGameObjectsWithTag("Block");
+        for(int i = 0; i < Blocks.Length;i++)
+        {
+            Blocks[i].layer = 0;
+        }
     }
 }

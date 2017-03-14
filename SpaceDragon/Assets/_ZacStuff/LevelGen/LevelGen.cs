@@ -14,7 +14,7 @@ public class LevelGen : MonoBehaviour
         {
             for (int x = 0; x < height; x++)
             {
-                Instantiate(baseBlock, new Vector3((float)i*2 , (float)x*2, 0), Quaternion.identity);
+                Instantiate(baseBlock, new Vector3((float)i*transform.localScale.x , (float)x * transform.localScale.y, 0), Quaternion.identity);
             }
         }
     }
