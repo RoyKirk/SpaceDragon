@@ -41,13 +41,14 @@ public class PlayerMovement : MonoBehaviour {
             GameObject temp = (GameObject)(Instantiate(bullet, transform.position, transform.rotation));
             Vector3 direction = reticle.transform.position - transform.position;
             temp.transform.up = new Vector3(direction.normalized.x, direction.normalized.y, 0);
+            temp.GetComponent<Rigidbody2D>().velocity = rb2D.velocity;//.magnitude * temp.transform.up;
         }
 
         Vector3 downDirection = pivot.position - transform.position;
         downDirection.Normalize();
         transform.up = -downDirection;
         //Ground check
-        RaycastHit2D groundCheck = Physics2D.Raycast(transform.position + downDirection, new Vector2(downDirection.x,downDirection.y),atmosphereRadius);
+        RaycastHit2D groundCheck = Physics2D.Raycast(transform.position, new Vector2(downDirection.x,downDirection.y),atmosphereRadius);
         Debug.DrawRay(transform.position, 100*downDirection);
         if (groundCheck.collider != null)
         {
@@ -66,19 +67,22 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         //Atmosphere
-        if(groundCheck.collider != null && player.GetAxis("Move Horizontal")== 0 && player.GetAxis("Move Vertical") == 0)
+        if (groundCheck.collider != null && player.GetAxis("Move Horizontal") == 0 && player.GetAxis("Move Vertical") == 0)
         {
-            if(rb2D.velocity.magnitude <= 0.1)
+            Vector2 localVel = transform.InverseTransformDirection(rb2D.velocity);
+            
+            if (localVel.x <= 0.1)
             {
-                rb2D.velocity.Set(0,0);
+                localVel = new Vector2(0, localVel.y);
             }
             else
             {
-                rb2D.AddForce(-rb2D.velocity.normalized * 5f);
-                //rb2D.velocity *= 0.2f;
-                //rb2D.velocity = new Vector2(rb2D.velocity.x *0.2f, rb2D.velocity.y);
-            }            
+                localVel = new Vector2(localVel.x * 0.9f, localVel.y);
+            }
+
+            rb2D.velocity = transform.TransformDirection(localVel);
         }
+
 
         //Gravity
         //if (!onGround)
@@ -88,11 +92,8 @@ public class PlayerMovement : MonoBehaviour {
         //float force = liftForce * heightError - rb2D.velocity.y * damping;
         //}
 
-        if (player.GetAxis("Move Horizontal") == 0 && player.GetAxis("Move Vertical") == 0)
-        {
-            rb2D.AddForce(downDirection * gravity);
-        }
-
+        rb2D.AddForce(downDirection * gravity);
+        
         //Movement with Terminal Velocity
         if (rb2D.velocity.magnitude <= terminalVelocity)
         {
@@ -105,19 +106,20 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         //Aiming
-        if (reticle.transform.localPosition.magnitude <= retMaxDis)
+        if (((Vector2)(reticle.transform.localPosition)).magnitude <= retMaxDis)
         {
-            reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.x + player.GetAxis("Aim Horizontal"), reticle.transform.localPosition.y + player.GetAxis("Aim Vertical"), reticle.transform.localPosition.z);
-            if (reticle.transform.localPosition.magnitude > retMaxDis)
+            reticle.transform.localPosition += new Vector3(player.GetAxis("Aim Horizontal"), player.GetAxis("Aim Vertical"), 0);
+            if (((Vector2)(reticle.transform.localPosition)).magnitude > retMaxDis)
             {
-                reticle.transform.localPosition = reticle.transform.localPosition.normalized * retMaxDis;
+                reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x * retMaxDis, reticle.transform.localPosition.normalized.y * retMaxDis, reticle.transform.localPosition.z);
             }
         }
         else
         {
-            reticle.transform.localPosition = reticle.transform.localPosition.normalized * retMaxDis;
+            reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x * retMaxDis, reticle.transform.localPosition.normalized.y * retMaxDis, reticle.transform.localPosition.z);
         }
 
+        //Camera Movement
         Vector3 midPoint = reticle.transform.localPosition.normalized * reticle.transform.localPosition.magnitude / 2;
         midPoint = new Vector3(midPoint.x, midPoint.y, playerCamera.transform.localPosition.z);
         if ((midPoint - playerCamera.transform.localPosition).magnitude > 0)
