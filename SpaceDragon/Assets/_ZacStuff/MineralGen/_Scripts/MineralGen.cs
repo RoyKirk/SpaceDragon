@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MineralGen : MonoBehaviour
 {
-    public GameObject[] planet;
+    GameObject[] planet;
     public GameObject planetCore;
     public float MaxGenDistanceFromCore;
 
@@ -30,6 +30,7 @@ public class MineralGen : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        planet = GameObject.FindGameObjectsWithTag("Block");
         clusterStart = new GameObject[numberOfClusters];
         currentClusterResources = new int[numberOfClusters];
         GenClusterStartPoints();

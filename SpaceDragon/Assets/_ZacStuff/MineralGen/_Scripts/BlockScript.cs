@@ -9,8 +9,12 @@ public class BlockScript : MonoBehaviour
     public GameObject particleEffect;
     public GameObject pickUpObj;
 
-    public Material[] blockTypeMats;
+    public Mesh[] DirtMesh;
+    public Mesh[] MetalMesh;
+    public Mesh[] AmmoMesh;
+    public Mesh[] UnbreakableMesh;
 
+    int randMesh = 0;
 
     void Update()
     {
@@ -22,23 +26,26 @@ public class BlockScript : MonoBehaviour
         }
     }
 
-    public void ChangeType(int newType)
+    public void UpdateMat(int newType)
     {
-        //change material and type here
         typeValue = newType;
-        switch(newType)
+        switch (newType)
         {
             case 0://grey dirt
-                gameObject.GetComponent<Renderer>().material = blockTypeMats[newType];
+                randMesh = Random.Range(0, DirtMesh.Length);
+                gameObject.GetComponent<MeshFilter>().mesh = DirtMesh[randMesh];
                 break;
             case 1://metal
-                gameObject.GetComponent<Renderer>().material = blockTypeMats[newType];
+                randMesh = Random.Range(0, MetalMesh.Length);
+                gameObject.GetComponent<MeshFilter>().mesh = MetalMesh[randMesh];
                 break;
             case 2://ammo
-                gameObject.GetComponent<Renderer>().material = blockTypeMats[newType];
+                randMesh = Random.Range(0, AmmoMesh.Length);
+                gameObject.GetComponent<MeshFilter>().mesh = AmmoMesh[randMesh];
                 break;
             case 3://unbreakable
-                gameObject.GetComponent<Renderer>().material = blockTypeMats[newType];
+                randMesh = Random.Range(0, UnbreakableMesh.Length);
+                gameObject.GetComponent<MeshFilter>().mesh = UnbreakableMesh[randMesh];
                 break;
         }
     }

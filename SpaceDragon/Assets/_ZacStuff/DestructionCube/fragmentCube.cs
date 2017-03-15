@@ -11,6 +11,12 @@ public class fragmentCube : MonoBehaviour
     float iterationScale;
     float hp;
 
+    public Mesh[] DirtMesh;
+    public Mesh[] MetalMesh;
+    public Mesh[] AmmoMesh;
+    public Mesh[] UnbreakableMesh;
+    int randMesh = 0;
+
     public int typeValue = 0;
 
     public bool change;
@@ -50,7 +56,10 @@ public class fragmentCube : MonoBehaviour
                // frag.transform.localScale = gameObject.transform.localScale;
                 frag.transform.localScale = new Vector3(frag.transform.localScale.x / fragmentPieces, frag.transform.localScale.y / fragmentPieces, frag.transform.localScale.z);
                 frag.transform.position = new Vector3(iterationVector.x + (fragmentObj.transform.localScale.x/fragmentPieces * x), iterationVector.y + (fragmentObj.transform.localScale.y/fragmentPieces * y), iterationVector.z);
-                frag.GetComponent<BlockScript>().ChangeType(typeValue);
+                Quaternion newRot = Quaternion.identity;
+                newRot.eulerAngles  = new Vector3(0, 180, 0);
+                frag.transform.rotation = newRot;
+                frag.GetComponent<BlockScript>().UpdateMat(typeValue);
                 
             }
         }
@@ -62,7 +71,7 @@ public class fragmentCube : MonoBehaviour
 
     
 
-    public Material[] blockTypeMats;
+    
 
     public void ChangeType(int newType)
     {
@@ -71,21 +80,26 @@ public class fragmentCube : MonoBehaviour
         change = true;
     }
 
-    void UpdateMat(int newType)
+    public void UpdateMat(int newType)
     {
+        typeValue = newType;
         switch (newType)
         {
             case 0://grey dirt
-                gameObject.GetComponent<Renderer>().material = blockTypeMats[newType];
+                randMesh = Random.Range(0, DirtMesh.Length);
+                gameObject.GetComponent<MeshFilter>().mesh = DirtMesh[randMesh];
                 break;
             case 1://metal
-                gameObject.GetComponent<Renderer>().material = blockTypeMats[newType];
+                randMesh = Random.Range(0, MetalMesh.Length);
+                gameObject.GetComponent<MeshFilter>().mesh = MetalMesh[randMesh];
                 break;
             case 2://ammo
-                gameObject.GetComponent<Renderer>().material = blockTypeMats[newType];
+                randMesh = Random.Range(0, AmmoMesh.Length);
+                gameObject.GetComponent<MeshFilter>().mesh = AmmoMesh[randMesh];
                 break;
             case 3://unbreakable
-                gameObject.GetComponent<Renderer>().material = blockTypeMats[newType];
+                randMesh = Random.Range(0, UnbreakableMesh.Length);
+                gameObject.GetComponent<MeshFilter>().mesh = UnbreakableMesh[randMesh];
                 break;
         }
         change = false;
