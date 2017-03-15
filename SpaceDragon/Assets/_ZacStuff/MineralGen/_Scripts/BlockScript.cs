@@ -37,7 +37,7 @@ public class BlockScript : MonoBehaviour
                 break;
             case 1://metal
                 randMesh = Random.Range(0, MetalMesh.Length);
-                gameObject.GetComponent<MeshFilter>().mesh = MetalMesh[randMesh];
+                gameObject.GetComponent<MeshFilter>().mesh = MetalMesh[0];
                 break;
             case 2://ammo
                 randMesh = Random.Range(0, AmmoMesh.Length);

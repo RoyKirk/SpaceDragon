@@ -130,7 +130,7 @@ public class MineralGen : MonoBehaviour
     int RaycastSides(GameObject currentObj, Vector2 direction, int spreadValue)
     {
         currentObj.layer = 2;
-        RaycastHit2D hit = Physics2D.Raycast(currentObj.transform.position, direction, 100);
+        RaycastHit2D hit = Physics2D.Raycast(currentObj.transform.position, direction, 1000);
         if(hit != false)
         {
             if (hit.collider.gameObject.tag == "Block")
