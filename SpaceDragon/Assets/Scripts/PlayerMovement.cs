@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour {
     public int playerId = 0;
     public Transform pivot;
     public GameObject reticle;
+    public GameObject gravityArrow;
     public GameObject playerCamera;
     public GameObject bullet;
     public GameObject bulletSpawn;
@@ -110,7 +111,9 @@ public class PlayerMovement : MonoBehaviour {
         {
             rb2D.AddForce(downDirection * gravity);
         }
-        
+
+        gravityArrow.transform.up = -downDirection;
+
         //Movement with Terminal Velocity
         if (rb2D.velocity.magnitude <= terminalVelocity)
         {
@@ -128,6 +131,7 @@ public class PlayerMovement : MonoBehaviour {
             reticle.transform.localPosition += new Vector3(player.GetAxis("Aim Horizontal"), player.GetAxis("Aim Vertical"), 0);
             if (((Vector2)(reticle.transform.localPosition)).magnitude > retMaxDis)
             {
+                //reticle.transform.localPosition = new Vector3(pos.x, pos.y, reticle.transform.localPosition.z);
                 reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x * retMaxDis, reticle.transform.localPosition.normalized.y * retMaxDis, reticle.transform.localPosition.z);
             }
         }
