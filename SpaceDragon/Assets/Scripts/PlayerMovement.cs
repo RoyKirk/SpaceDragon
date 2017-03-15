@@ -53,6 +53,7 @@ public class PlayerMovement : MonoBehaviour {
             temp2.transform.parent = bulletSpawn.transform;
             Vector3 direction = reticle.transform.position - transform.position;
             temp.transform.up = new Vector3(direction.normalized.x, direction.normalized.y, 0);
+            temp2.transform.up = temp.transform.up;
             temp.GetComponent<Rigidbody2D>().velocity = rb2D.velocity;//.magnitude * temp.transform.up;
             rb2D.AddForce(-direction * gunRecoil);
             fireTimer = 0;
