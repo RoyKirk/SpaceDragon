@@ -16,20 +16,20 @@ public class Fireball : MonoBehaviour
 	void Start () 
 	{
 		Destroy (this, lifespan);
-		transform.LookAt (dragonPivot);
 		velocity.y = 1;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		GetComponent<Rigidbody2D> ().AddRelativeForce (Vector2.up * speed);
+		transform.LookAt (Vector2.zero);
+		GetComponent<Rigidbody2D> ().AddRelativeForce (Vector2.right * speed);
 		//transform.localPosition += velocity * speed * Time.deltaTime;
 	}
 
 	void RaycastBlock()
 	{
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, 0.2f);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, 0.2f);
 		if (hit != false)
 		{
 			if (hit.collider.tag == "Block")
