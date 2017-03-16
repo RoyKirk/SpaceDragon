@@ -58,6 +58,7 @@ public class DragonMovement : MonoBehaviour
 	{
 		dragonClone = Instantiate (dragonPrefab, this.transform, false) as GameObject;
 		dragonClone.transform.position = spawnPos;
+		dragonClone.GetComponent<DragonAttack>().dragonPivot = transform;
 		dragonLifetime = dragonDuration;
 		isSpawned = true;
 		isLeaving = false;
