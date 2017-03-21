@@ -16,9 +16,10 @@ public class PlayerMovement : MonoBehaviour {
     public GameObject bulletSpawn;
     public GameObject gun;
     public GameObject muzzleFlash;
+    public int health = 3;
     public float gunRecoil = 1;
     public float cameraSpeed = 2;
-    public float retMaxDis = 4;
+    public float cursorMaxDis = 4;
     public float gravity = 1;
     public float atmosphereRadius = 2;
     bool onGround = false;
@@ -31,6 +32,9 @@ public class PlayerMovement : MonoBehaviour {
     public Text scoreText;
     public float fireTime = 0.1f;
     float fireTimer = 0;
+    public GameObject PauseMenu;
+    public GameObject DefeatMenu;
+
 
     // Use this for initialization
     void Start () {
@@ -44,6 +48,15 @@ public class PlayerMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //Menu
+        if(player.GetButton("Pause"))
+        {
+            Time.timeScale = 0.0f;
+            PauseMenu.SetActive(true);
+        }
+
+
+        //
         fireTimer += Time.deltaTime;
         scoreText.text = blockCount.ToString();
         //Fire bullet
@@ -126,18 +139,18 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         //Aiming
-        if (((Vector2)(reticle.transform.localPosition)).magnitude <= retMaxDis)
+        if (((Vector2)(reticle.transform.localPosition)).magnitude <= cursorMaxDis)
         {
             reticle.transform.localPosition += new Vector3(player.GetAxis("Aim Horizontal"), player.GetAxis("Aim Vertical"), 0);
-            if (((Vector2)(reticle.transform.localPosition)).magnitude > retMaxDis)
+            if (((Vector2)(reticle.transform.localPosition)).magnitude > cursorMaxDis)
             {
                 //reticle.transform.localPosition = new Vector3(pos.x, pos.y, reticle.transform.localPosition.z);
-                reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x * retMaxDis, reticle.transform.localPosition.normalized.y * retMaxDis, reticle.transform.localPosition.z);
+                reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x * cursorMaxDis, reticle.transform.localPosition.normalized.y * cursorMaxDis, reticle.transform.localPosition.z);
             }
         }
         else
         {
-            reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x * retMaxDis, reticle.transform.localPosition.normalized.y * retMaxDis, reticle.transform.localPosition.z);
+            reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x * cursorMaxDis, reticle.transform.localPosition.normalized.y * cursorMaxDis, reticle.transform.localPosition.z);
         }
 
         //Gun Position
@@ -158,5 +171,15 @@ public class PlayerMovement : MonoBehaviour {
             playerCamera.transform.localPosition = midPoint;
         }
 
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if(health <= 0)
+        {
+            Time.timeScale = 0.0f;
+            DefeatMenu.SetActive(true);
+        }
     }
 }
