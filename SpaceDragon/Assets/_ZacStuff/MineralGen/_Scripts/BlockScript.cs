@@ -7,7 +7,7 @@ public class BlockScript : MonoBehaviour
     public float HP = 1;
 
     public GameObject particleEffect;
-    public GameObject pickUpObj;
+    public GameObject[] pickUpObj;
 
     public Mesh[] DirtMesh;
     public Mesh[] MetalMesh;
@@ -20,7 +20,7 @@ public class BlockScript : MonoBehaviour
     {
         if(HP <= 0)
         {
-            Instantiate(pickUpObj, transform.position, Quaternion.identity);
+            Instantiate(pickUpObj[typeValue], transform.position, Quaternion.identity);
             //give resource to player
             Destroy(gameObject);
         }
