@@ -45,7 +45,7 @@ public class BlockScript : MonoBehaviour
                 break;
             case 3://unbreakable
                 randMesh = Random.Range(0, UnbreakableMesh.Length);
-                gameObject.GetComponent<MeshFilter>().mesh = UnbreakableMesh[randMesh];
+                gameObject.GetComponent<MeshFilter>().mesh = DirtMesh[randMesh];
                 break;
         }
     }

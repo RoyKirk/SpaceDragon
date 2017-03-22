@@ -8,6 +8,8 @@ public class BulletBehavoiur : MonoBehaviour
     public float lifetime = 10.0f;
     public float HP = 4;
 
+    public GameObject shootParticle;
+
     void Start()
     {
         GetComponent<Rigidbody2D>().velocity += new Vector2((transform.up * bulletSpeed).x, (transform.up * bulletSpeed).y);
@@ -31,7 +33,15 @@ public class BulletBehavoiur : MonoBehaviour
             if (hit.collider.tag == "Block")
             {
                 //trigger shot condition to fragment
-                hit.collider.gameObject.GetComponent<fragmentCube>().shot = true;
+                if(hit.collider.gameObject.GetComponent<fragmentCube>().typeValue <= 2)
+                {
+                    hit.collider.gameObject.GetComponent<fragmentCube>().shot = true;
+                }
+                else
+                {
+                    Instantiate(shootParticle, transform.position, Quaternion.identity);
+                    TakeDMG(HP);
+                }
             }
             else if (hit.collider.tag == "Fragment")
             {
