@@ -20,7 +20,7 @@ public class BlockScript : MonoBehaviour
     {
         if(HP <= 0)
         {
-            Instantiate(pickUpObj[typeValue], transform.position, Quaternion.identity);
+            Instantiate(pickUpObj[typeValue], transform.position, transform.rotation, transform.parent);
             //give resource to player
             Destroy(gameObject);
         }
