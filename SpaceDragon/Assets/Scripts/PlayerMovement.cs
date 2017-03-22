@@ -53,6 +53,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             Time.timeScale = 0.0f;
             PauseMenu.SetActive(true);
+            Cursor.visible = true;
         }
 
 
@@ -170,6 +171,9 @@ public class PlayerMovement : MonoBehaviour {
         {
             playerCamera.transform.localPosition = midPoint;
         }
+
+        //Change pivot
+        //asteroids need to have player as child
 
     }
 
