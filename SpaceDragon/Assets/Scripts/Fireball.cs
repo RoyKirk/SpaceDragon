@@ -60,8 +60,14 @@ public class Fireball : MonoBehaviour
     {
         if (collision.gameObject.tag == "Block")
         {
-            //trigger shot condition to fragment
-            collision.gameObject.GetComponent<fragmentCube>().shot = true;
+            if (collision.gameObject.GetComponent<fragmentCube>().typeValue <= 2)
+            {
+                collision.gameObject.GetComponent<fragmentCube>().shot = true;
+            }
+            else
+            {
+                TakeDamage(1);
+            }
         }
         else if (collision.gameObject.tag == "Fragment")
         {
