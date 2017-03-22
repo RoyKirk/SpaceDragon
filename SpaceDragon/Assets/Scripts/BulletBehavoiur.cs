@@ -22,7 +22,7 @@ public class BulletBehavoiur : MonoBehaviour
             Destroy(gameObject);
         }
         //transform.position += transform.up * bulletSpeed;
-        RaycastBlock();
+        //RaycastBlock();
     }
 
     void RaycastBlock()
@@ -56,5 +56,27 @@ public class BulletBehavoiur : MonoBehaviour
     {
         //reduce bullets HP
         HP -= dmg;
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Block")
+        {
+            if (collision.gameObject.GetComponent<fragmentCube>().typeValue <= 2)
+            {
+                collision.gameObject.GetComponent<fragmentCube>().shot = true;
+            }
+            else
+            {
+                Instantiate(shootParticle, transform.position, Quaternion.identity);
+                TakeDMG(HP);
+            }
+        }
+        else if (collision.gameObject.tag == "Fragment")
+        {
+            //dmg block and take dmg
+            collision.gameObject.GetComponent<BlockScript>().takeDMG(1);
+            TakeDMG(1);
+        }
     }
 }

@@ -57,7 +57,8 @@ public class AstroidMovement : MonoBehaviour
 
     void SpawnAstroid()
     {
-        astroidClone = Instantiate(astroidPrefab, this.transform, false) as GameObject;
+        astroidClone = new GameObject();
+        astroidClone = ( Instantiate(astroidPrefab, this.transform, false)) as GameObject;
         astroidClone.transform.position = spawnPos;//.transform.position;
         astroidLifetime = astroidDuration;
         isSpawned = true;
@@ -81,9 +82,13 @@ public class AstroidMovement : MonoBehaviour
             astroidClone.transform.position += velocity * moveSpeed * Time.deltaTime;
         }
 
-        if (astroidClone != null && Vector3.Distance(transform.position, astroidClone.transform.position) <= orbitDistance)
+        if (astroidClone != null && Vector3.Distance(transform.position, astroidClone.transform.position) <= orbitDistance && Vector3.Distance(transform.position, astroidClone.transform.position) >= (orbitDistance - 5))
         {
             transform.Rotate(Vector3.forward * -1 * rotateSpeed * Time.deltaTime);
+        }
+        else
+        {
+            astroidClone.transform.position += velocity * moveSpeed * Time.deltaTime;
         }
     }
 
