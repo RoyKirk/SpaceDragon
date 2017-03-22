@@ -52,7 +52,7 @@ public class ConstructionScript : MonoBehaviour
 
         if (messageTimer <= 0)
         {
-            SetErrorMessage("");
+            SetErrorMessage("", false);
         }
         
 
@@ -67,18 +67,22 @@ public class ConstructionScript : MonoBehaviour
             }
             else
             {
-                SetErrorMessage("Not Enough Metal");
+                SetErrorMessage("Not Enough Metal", true);
             }
             
         }
     }
 
-    void SetErrorMessage(string message)
+    void SetErrorMessage(string message, bool set)
     {
         ErrorMessage.text = message;
-        if(message != "")
+        if(set)
         {
             setMessage = true;
+        }
+        else
+        {
+            setMessage = false;
         }
     }
 }
