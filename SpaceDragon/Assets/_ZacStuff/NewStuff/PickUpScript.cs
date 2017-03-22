@@ -32,7 +32,25 @@ public class PickUpScript : MonoBehaviour
         if(distance <= PickUpDistance)
         {
             //player picks up resource
-            Player.GetComponent<PlayerMovement>().blockCount += 1;
+            switch(TypeValue)
+            {
+                case 0:
+                    Player.GetComponent<PlayerMovement>().blockCount += 1;
+                    break;
+                case 1:
+                    Player.GetComponent<PlayerMovement>().metalCount += 1;
+                    break;
+                case 2:
+                    //Player.GetComponent<PlayerMovement>().blockCount += 1;
+                    break;
+                case 3:
+                    //Player.GetComponent<PlayerMovement>().blockCount += 1;
+                    break;
+                default:
+                    //Player.GetComponent<PlayerMovement>().blockCount += 1;
+                    break;
+            }
+            
             Destroy(gameObject);
         }
         if(seek)

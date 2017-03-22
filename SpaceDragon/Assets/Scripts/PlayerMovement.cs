@@ -29,7 +29,9 @@ public class PlayerMovement : MonoBehaviour {
     public float moveSpeed = 4;
     public float terminalVelocity = 1;
     public int blockCount = 0;
+    public int metalCount = 0;
     public Text scoreText;
+    public Text metalText;
     public float fireTime = 0.1f;
     float fireTimer = 0;
     public GameObject PauseMenu;
@@ -60,6 +62,7 @@ public class PlayerMovement : MonoBehaviour {
         //
         fireTimer += Time.deltaTime;
         scoreText.text = blockCount.ToString();
+        metalText.text = metalCount.ToString();
         //Fire bullet
         if (player.GetButton("Fire") && fireTimer>=fireTime)
         {
