@@ -186,4 +186,16 @@ public class PlayerMovement : MonoBehaviour {
             DefeatMenu.SetActive(true);
         }
     }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Asteroid")
+        {
+
+        }
+        if(other.tag == "Planet")
+        {
+
+        }
+    }
 }
