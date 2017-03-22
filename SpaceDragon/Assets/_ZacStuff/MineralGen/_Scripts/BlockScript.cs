@@ -7,7 +7,7 @@ public class BlockScript : MonoBehaviour
     public float HP = 1;
 
     public GameObject particleEffect;
-    public GameObject pickUpObj;
+    public GameObject[] pickUpObj;
 
     public Mesh[] DirtMesh;
     public Mesh[] MetalMesh;
@@ -20,7 +20,7 @@ public class BlockScript : MonoBehaviour
     {
         if(HP <= 0)
         {
-            Instantiate(pickUpObj, transform.position, Quaternion.identity);
+            Instantiate(pickUpObj[typeValue], transform.position, transform.rotation, transform.parent);
             //give resource to player
             Destroy(gameObject);
         }
@@ -45,7 +45,7 @@ public class BlockScript : MonoBehaviour
                 break;
             case 3://unbreakable
                 randMesh = Random.Range(0, UnbreakableMesh.Length);
-                gameObject.GetComponent<MeshFilter>().mesh = UnbreakableMesh[randMesh];
+                gameObject.GetComponent<MeshFilter>().mesh = DirtMesh[randMesh];
                 break;
         }
     }

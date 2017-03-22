@@ -52,13 +52,15 @@ public class fragmentCube : MonoBehaviour
         {
             for(int y = 0; y < fragmentPieces;y++)
             {
-                frag = Instantiate(fragmentObj) as GameObject;
+                iterationVector = new Vector3(transform.position.x - (transform.localScale.x / 2) + fragmentObj.transform.localScale.x / fragmentPieces / 2, transform.position.y - (transform.localScale.y / 2) + fragmentObj.transform.localScale.y / fragmentPieces / 2, transform.position.z);// - (transform.localScale / 2) + fragmentObj.transform.localScale / 2);
+
+                frag = Instantiate(fragmentObj, this.transform.parent, false) as GameObject;
                // frag.transform.localScale = gameObject.transform.localScale;
                 frag.transform.localScale = new Vector3(frag.transform.localScale.x / fragmentPieces, frag.transform.localScale.y / fragmentPieces, frag.transform.localScale.z);
                 frag.transform.position = new Vector3(iterationVector.x + (fragmentObj.transform.localScale.x/fragmentPieces * x), iterationVector.y + (fragmentObj.transform.localScale.y/fragmentPieces * y), iterationVector.z);
                 Quaternion newRot = Quaternion.identity;
                 newRot.eulerAngles  = new Vector3(0, 180, 0);
-                frag.transform.rotation = newRot;
+                frag.transform.rotation = transform.rotation;
                 frag.GetComponent<BlockScript>().UpdateMat(typeValue);
                 
             }
