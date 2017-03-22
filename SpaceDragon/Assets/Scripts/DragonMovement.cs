@@ -3,6 +3,8 @@ using System.Collections;
 
 public class DragonMovement : MonoBehaviour 
 {
+    public Transform playerPos;
+
 	public GameObject dragonPrefab;
 	GameObject dragonClone;
 
@@ -58,8 +60,10 @@ public class DragonMovement : MonoBehaviour
 	{
 		dragonClone = Instantiate (dragonPrefab, this.transform, false) as GameObject;
 		dragonClone.transform.position = spawnPos;
-		dragonClone.GetComponent<DragonAttack>().dragonPivot = transform;
-		dragonLifetime = dragonDuration;
+        dragonClone.GetComponent<DragonRig>().player = playerPos;
+        dragonClone.GetComponent<DragonRig>().planet = this.transform;
+        dragonClone.GetComponent<DragonRig>().AssignReferences();
+        dragonLifetime = dragonDuration;
 		isSpawned = true;
 		isLeaving = false;
 	}
