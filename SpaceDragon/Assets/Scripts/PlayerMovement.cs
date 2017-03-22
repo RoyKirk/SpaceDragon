@@ -187,7 +187,7 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter2D(Collider2D other)
     {
         if(other.tag == "Asteroid")
         {
@@ -196,7 +196,7 @@ public class PlayerMovement : MonoBehaviour {
         }
         if(other.tag == "Planet")
         {
-            pivot = other.transform;
+            pivot = other.transform.transform;
             transform.parent = null;
         }
     }
