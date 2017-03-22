@@ -191,11 +191,13 @@ public class PlayerMovement : MonoBehaviour {
     {
         if(other.tag == "Asteroid")
         {
-
+            pivot = other.transform;
+            transform.parent = other.transform;
         }
         if(other.tag == "Planet")
         {
-
+            pivot = other.transform;
+            transform.parent = null;
         }
     }
 }
