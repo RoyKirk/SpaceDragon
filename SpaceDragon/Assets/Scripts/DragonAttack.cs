@@ -4,10 +4,11 @@ using System.Collections;
 public class DragonAttack : MonoBehaviour 
 {
 	public GameObject Fireball;
-	public Transform dragonPivot;
+	public Transform target;
 
-	public float cooldown;
-	float remainingCooldown;
+    public float minCooldown;
+    public float maxCooldown;
+    float remainingCooldown;
 
 	public float duration;
 	float remainingDuration;
@@ -18,7 +19,7 @@ public class DragonAttack : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		remainingCooldown = cooldown;
+		remainingCooldown = Random.Range(minCooldown, maxCooldown);
 		remainingDuration = duration;
 		delay = 0;
 	}
@@ -42,13 +43,14 @@ public class DragonAttack : MonoBehaviour
 		if (delay <= 0)
 		{
 			delay = frequency;
-			GameObject currentFireball = Instantiate (Fireball, transform.position, dragonPivot.rotation) as GameObject;
-			currentFireball.GetComponent<Fireball> ().dragonPivot = dragonPivot;
-		}
+			GameObject currentFireball = Instantiate (Fireball, transform.position, target.rotation) as GameObject;
+            currentFireball.GetComponent<Fireball>().target = target;
+
+        }
 
 		if (remainingDuration <= 0) 
 		{
-			remainingCooldown = cooldown;
+            remainingCooldown = Random.Range(minCooldown, maxCooldown);
 			remainingDuration = duration;
 		}
 	}

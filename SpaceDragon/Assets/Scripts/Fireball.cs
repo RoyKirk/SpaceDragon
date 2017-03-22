@@ -6,30 +6,31 @@ public class Fireball : MonoBehaviour
 	public float lifespan;
 	public float speed;
 
-	public int health;
+    int health;
+    public int minHealth;
+    public int maxHealth;
 
-	public Transform dragonPivot;
+    public Transform target;
 
-	Vector2 velocity;
+	//public Vector2 target;
 
 	// Use this for initialization
 	void Start () 
 	{
-		Destroy (this, lifespan);
-		velocity.y = 1;
+        health = Random.Range(minHealth, maxHealth);
+		Destroy (this.gameObject, lifespan);
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		transform.LookAt (Vector2.zero);
-		GetComponent<Rigidbody2D> ().AddRelativeForce (Vector2.right * speed);
-		//transform.localPosition += velocity * speed * Time.deltaTime;
+        transform.LookAt (target.position);
+        transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 	}
 
 	void RaycastBlock()
 	{
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, 0.2f);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, 1.2f);
 		if (hit != false)
 		{
 			if (hit.collider.tag == "Block")
@@ -52,7 +53,21 @@ public class Fireball : MonoBehaviour
 
 		if (health <= 0) 
 		{
-			Destroy (this);
+			Destroy (this.gameObject);
 		}
 	}
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Block")
+        {
+            //trigger shot condition to fragment
+            collision.gameObject.GetComponent<fragmentCube>().shot = true;
+        }
+        else if (collision.gameObject.tag == "Fragment")
+        {
+            //dmg block and take dmg
+            collision.gameObject.GetComponent<BlockScript>().takeDMG(1);
+            TakeDamage(1);
+        }
+    }
 }
