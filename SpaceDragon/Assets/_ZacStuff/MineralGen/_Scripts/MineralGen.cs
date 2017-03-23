@@ -8,19 +8,19 @@ public class MineralGen : MonoBehaviour
     public float MaxGenDistanceFromCore;
 
     public int numberOfClusters;
-    public int minDistanceBetweenClusters;
+    //public int minDistanceBetweenClusters;
     
     public GameObject[] clusterStart;
     int checkCounter;
     int rand;
 
-    public int minClusterResource;
-    public int maxClusterResource;
+    //public int minClusterResource;
+    //public int maxClusterResource;
     public int[] currentClusterResources;
 
-    public int minTotalResources;
-    public int maxTotalResources;
-    public int currentTotalResources;
+    //public int minTotalResources;
+    //public int maxTotalResources;
+    //public int currentTotalResources;
 
     GameObject currentStartNode;
 

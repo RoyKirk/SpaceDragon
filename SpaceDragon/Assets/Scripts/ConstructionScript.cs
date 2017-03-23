@@ -64,7 +64,7 @@ public class ConstructionScript : MonoBehaviour
             //placing a turret
             if(metalCount >= turretCost)
             {
-                Destroy(Instantiate(buildingParticle, transform.position, transform.rotation));
+                Destroy(Instantiate(buildingParticle, transform.position, transform.rotation), 2);
                 Instantiate(turret, transform.position, transform.rotation);
                 PlayerM.metalCount -= turretCost;
             }
