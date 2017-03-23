@@ -75,6 +75,7 @@ public class Fireball : MonoBehaviour
             if (collision.gameObject.GetComponent<BlockScript>().typeValue <= 2)
             {
                 collision.gameObject.GetComponent<BlockScript>().takeDMG(1);
+                TakeDamage(1);
             }
             else
             {
