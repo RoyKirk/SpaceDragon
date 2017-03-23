@@ -46,7 +46,7 @@ public class BulletBehavoiur : MonoBehaviour
             else if (hit.collider.tag == "Fragment")
             {
                 //dmg block and take dmg
-                hit.collider.gameObject.GetComponent<BlockScript>().takeDMG(1);
+                hit.collider.gameObject.GetComponent<BlockScript>().takeDMG(1,true);
                 TakeDMG(1);
             }
         }
@@ -75,7 +75,7 @@ public class BulletBehavoiur : MonoBehaviour
         else if (collision.gameObject.tag == "Fragment")
         {
             //dmg block and take dmg
-            collision.gameObject.GetComponent<BlockScript>().takeDMG(1);
+            collision.gameObject.GetComponent<BlockScript>().takeDMG(1,true);
             TakeDMG(1);
         }
     }

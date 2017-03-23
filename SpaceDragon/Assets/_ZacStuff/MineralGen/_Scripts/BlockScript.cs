@@ -16,11 +16,17 @@ public class BlockScript : MonoBehaviour
 
     int randMesh = 0;
 
+    bool DROP;
+
     void Update()
     {
         if(HP <= 0)
         {
-            Instantiate(pickUpObj[typeValue], transform.position, transform.rotation, transform.parent);
+            if(DROP)
+            {
+                Instantiate(pickUpObj[typeValue], transform.position, transform.rotation, transform.parent);
+            }
+            
             //give resource to player
             Destroy(gameObject);
         }
@@ -50,10 +56,11 @@ public class BlockScript : MonoBehaviour
         }
     }
 
-    public void takeDMG(float dmg)
+    public void takeDMG(float dmg, bool drop)
     {
         HP -= dmg;
         Instantiate(particleEffect, transform.position, Quaternion.identity);
+        DROP = drop;
         //instantiate a particle effect.
         //drop a pickup when hp <= 0
     }

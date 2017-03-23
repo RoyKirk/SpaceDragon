@@ -16,7 +16,7 @@ public class MineralGen : MonoBehaviour
 
     //public int minClusterResource;
     //public int maxClusterResource;
-    public int[] currentClusterResources;
+    //public int[] currentClusterResources;
 
     //public int minTotalResources;
     //public int maxTotalResources;
@@ -32,7 +32,7 @@ public class MineralGen : MonoBehaviour
     {
         planet = GameObject.FindGameObjectsWithTag("Block");
         clusterStart = new GameObject[numberOfClusters];
-        currentClusterResources = new int[numberOfClusters];
+        //currentClusterResources = new int[numberOfClusters];
         GenClusterStartPoints();
 
     }
