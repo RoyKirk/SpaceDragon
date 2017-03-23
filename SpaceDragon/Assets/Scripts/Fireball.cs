@@ -72,7 +72,7 @@ public class Fireball : MonoBehaviour
         else if (collision.gameObject.tag == "Fragment")
         {
             //dmg block and take dmg
-            if (collision.gameObject.GetComponent<fragmentCube>().typeValue <= 2)
+            if (collision.gameObject.GetComponent<BlockScript>().typeValue <= 2)
             {
                 collision.gameObject.GetComponent<BlockScript>().takeDMG(1);
             }
