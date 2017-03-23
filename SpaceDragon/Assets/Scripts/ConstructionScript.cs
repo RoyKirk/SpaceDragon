@@ -20,6 +20,8 @@ public class ConstructionScript : MonoBehaviour
     public GameObject turret;
     public int turretCost = 10;
 
+    public GameObject buildingParticle;
+
     public Text ErrorMessage;
     bool setMessage = false;
     float messageDuration = 2;
