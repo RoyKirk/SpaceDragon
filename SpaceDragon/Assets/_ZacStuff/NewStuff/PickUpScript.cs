@@ -59,4 +59,12 @@ public class PickUpScript : MonoBehaviour
             transform.position += transform.forward * speed * Time.deltaTime;
         }
 	}
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.tag == "FireBall")
+        {
+            Destroy(gameObject);
+        }
+    }
 }
