@@ -11,6 +11,7 @@ public class Fireball : MonoBehaviour
     public int maxHealth;
 
     public Transform target;
+	Vector3 destination;
 
 	//public Vector2 target;
 
@@ -19,13 +20,14 @@ public class Fireball : MonoBehaviour
 	{
         health = Random.Range(minHealth, maxHealth);
 		Destroy (this.gameObject, lifespan);
+		destination = target.position;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-        transform.LookAt (target.position);
-        transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+		transform.LookAt (destination);
+        transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
 	}
 
 	void RaycastBlock()

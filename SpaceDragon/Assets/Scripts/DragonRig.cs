@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class DragonRig : MonoBehaviour
 {
-    public DragonAttack playerAttack;
+	public DragonMovement dragonPivot;
+
+	public DragonAttack plasmaAttack;
     public Transform player;
 
-    public DragonAttack planetAttack;
+	public DragonAttack devestateAttack;
+    public DragonAttack starfallAttack;
     public Transform planet;
+
+	int health;
 
 	// Use this for initialization
 	void Start ()
@@ -17,8 +22,14 @@ public class DragonRig : MonoBehaviour
 	}
 
     public void AssignReferences()
-    {
-        playerAttack.target = player;
-        planetAttack.target = planet;
+	{
+		plasmaAttack.target = player;
+		devestateAttack.target = planet;
+		starfallAttack.target = planet;
     }
+
+	public void TakeDamage(int damage)
+	{
+		
+	}
 }

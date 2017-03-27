@@ -23,6 +23,9 @@ public class DragonMovement : MonoBehaviour
 	public float dragonDuration;
 	float dragonLifetime;
 
+	public int maxHealth;
+
+
 	// Use this for initialization
 	void Start () 
 	{
