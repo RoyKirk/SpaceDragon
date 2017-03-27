@@ -17,8 +17,8 @@ public class ConstructionScript : MonoBehaviour
     int ammoCount;
 
 
-    public GameObject turret;
-    public int turretCost = 10;
+    public GameObject turretConstructor;
+    public int turretCost = 0;
 
     public GameObject buildingParticle;
 
@@ -65,7 +65,7 @@ public class ConstructionScript : MonoBehaviour
             if(metalCount >= turretCost)
             {
                 Destroy(Instantiate(buildingParticle, transform.position, transform.rotation), 2);
-                Instantiate(turret, transform.position, transform.rotation);
+                Instantiate(turretConstructor, transform.position, transform.rotation);
                 PlayerM.metalCount -= turretCost;
             }
             else

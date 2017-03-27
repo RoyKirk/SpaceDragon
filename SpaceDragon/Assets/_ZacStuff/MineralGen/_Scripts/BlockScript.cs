@@ -17,6 +17,7 @@ public class BlockScript : MonoBehaviour
     int randMesh = 0;
 
     bool DROP;
+    public float dropDuration = 60;
 
     void Update()
     {
@@ -24,7 +25,7 @@ public class BlockScript : MonoBehaviour
         {
             if(DROP)
             {
-                Instantiate(pickUpObj[typeValue], transform.position, transform.rotation, transform.parent);
+                Destroy(Instantiate(pickUpObj[typeValue], transform.position, transform.rotation, transform.parent), dropDuration);
             }
             
             //give resource to player

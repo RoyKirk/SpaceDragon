@@ -35,7 +35,7 @@ public class BulletBehavoiur : MonoBehaviour
                 //trigger shot condition to fragment
                 if(hit.collider.gameObject.GetComponent<fragmentCube>().typeValue <= 2)
                 {
-                    hit.collider.gameObject.GetComponent<fragmentCube>().shot = true;
+                    hit.collider.gameObject.GetComponent<fragmentCube>().TakeDamage(1);// = true;
                 }
                 else
                 {
@@ -64,7 +64,11 @@ public class BulletBehavoiur : MonoBehaviour
         {
             if (collision.gameObject.GetComponent<fragmentCube>().typeValue <= 2)
             {
-                collision.gameObject.GetComponent<fragmentCube>().shot = true;
+                collision.gameObject.GetComponent<fragmentCube>().TakeDamage(1);// = true;
+                //if (collision.gameObject.GetComponent<fragmentCube>() != 0)
+                //{
+                    TakeDMG(HP);
+                //}
             }
             else
             {

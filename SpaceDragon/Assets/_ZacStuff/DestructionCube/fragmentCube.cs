@@ -3,13 +3,13 @@ using System.Collections;
 
 public class fragmentCube : MonoBehaviour
 {
-    public bool shot;
+    //public bool shot;
     public GameObject fragmentObj;
     public int fragmentPieces;
 
     Vector3 iterationVector;
     float iterationScale;
-    float hp;
+    float hp = 2;
 
     public Mesh[] DirtMesh;
     public Mesh[] MetalMesh;
@@ -37,9 +37,8 @@ public class fragmentCube : MonoBehaviour
         {
             UpdateMat(typeValue);
         }
-        if (shot)
+        if (hp <= 0)
         {
-            shot = false;
             Fragment();
         }
 	}
@@ -71,7 +70,11 @@ public class fragmentCube : MonoBehaviour
     }
 
 
-    
+    public void TakeDamage(int DMG)
+    {
+        //take a dmg from fireball
+        hp -= DMG;
+    }
 
     
 
