@@ -9,7 +9,25 @@ public class fragmentCube : MonoBehaviour
 
     Vector3 iterationVector;
     float iterationScale;
-    float hp = 2;
+    float hp = 1;
+
+    struct Tier
+    {
+        float MaxHp;
+        float MinHp;
+        bool Metal;
+
+        public void SetupTier(float maxHp)
+        {
+            MaxHp = maxHp;
+            //repairCost
+            //upgradeCost
+            
+        }
+    };
+
+    Tier[] blockTiers;
+    int numberOfTiers = 4;
 
     public Mesh[] DirtMesh;
     public Mesh[] MetalMesh;
@@ -24,6 +42,10 @@ public class fragmentCube : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        blockTiers = new Tier[numberOfTiers];
+
+        //blockTiers[1].SetupTier(3, )
+
         iterationVector = new Vector3(transform.position.x - (transform.localScale.x / 2) + fragmentObj.transform.localScale.x / fragmentPieces / 2, transform.position.y - (transform.localScale.y / 2) + fragmentObj.transform.localScale.y / fragmentPieces / 2, transform.position.z);// - (transform.localScale / 2) + fragmentObj.transform.localScale / 2);
         iterationScale = fragmentObj.transform.localScale.x;
 
@@ -108,5 +130,10 @@ public class fragmentCube : MonoBehaviour
                 break;
         }
         change = false;
+    }
+
+    void Upgrade()
+    {
+
     }
 }
