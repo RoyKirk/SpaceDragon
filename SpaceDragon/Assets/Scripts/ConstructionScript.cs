@@ -18,7 +18,8 @@ public class ConstructionScript : MonoBehaviour
 
 
     public GameObject turretConstructor;
-    public int turretCost = 0;
+    public float speed;
+    //public int turretCost = 0;
 
     public GameObject buildingParticle;
 
@@ -61,18 +62,24 @@ public class ConstructionScript : MonoBehaviour
 
         if(player.GetButtonDown("Alt Fire"))
         {
+            Vector2 cursorInWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            Vector2 direction = cursorInWorldPos - new Vector2(transform.position.x, transform.position.y);
+            direction.Normalize();
+            GameObject projectile = (GameObject)Instantiate(turretConstructor, transform.position, Quaternion.identity);
+            projectile.GetComponent<Rigidbody2D>().velocity = direction * speed;
             //placing a turret
-            if(metalCount >= turretCost)
-            {
-                Destroy(Instantiate(buildingParticle, transform.position, transform.rotation), 2);
-                Instantiate(turretConstructor, transform.position, transform.rotation);
-                PlayerM.metalCount -= turretCost;
-            }
-            else
-            {
-                SetErrorMessage("Not Enough Metal", true);
-            }
-            
+            //if (metalCount >= turretCost)
+            //{
+            //    Destroy(Instantiate(buildingParticle, transform.position, transform.rotation), 2);
+            //    Instantiate(turretConstructor, transform.position, transform.rotation);
+            //    PlayerM.metalCount -= turretCost;
+            //}
+            //else
+            //{
+            //    SetErrorMessage("Not Enough Metal", true);
+            //}
+
         }
     }
 
