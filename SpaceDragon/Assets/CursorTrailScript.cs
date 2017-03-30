@@ -7,12 +7,12 @@ public class CursorTrailScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         cursorInWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = cursorInWorldPos;
+        transform.position = new Vector3(cursorInWorldPos.x, cursorInWorldPos.y, transform.position.z);
     }
 	
 	// Update is called once per frame
 	void LateUpdate () {
         cursorInWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = cursorInWorldPos;
+        transform.position = new Vector3(cursorInWorldPos.x, cursorInWorldPos.y, transform.position.z);
     }
 }
