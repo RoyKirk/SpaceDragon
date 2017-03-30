@@ -11,13 +11,13 @@ public class MenuActions : MonoBehaviour {
     {
         Time.timeScale = 1.0f;
         SceneManager.LoadScene("PlayerControls");
-        Cursor.visible = false;
+        //Cursor.visible = false;
     }
     public void Resume()
     {
         gameObject.SetActive(false);
         Time.timeScale = 1.0f;
-        Cursor.visible = false;
+        //Cursor.visible = false;
     }
     public void Exit()
     {

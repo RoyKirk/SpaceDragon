@@ -37,12 +37,14 @@ public class PlayerMovement : MonoBehaviour {
     float fireTimer = 0;
     public GameObject PauseMenu;
     public GameObject DefeatMenu;
+    public Texture2D cursorTex;
 
 
     // Use this for initialization
     void Start () {
 
-        Cursor.visible = false;
+        //Cursor.visible = false;
+        Cursor.SetCursor(cursorTex,new Vector2(0.5f,0.5f), CursorMode.Auto);
 
         rb2D = GetComponent<Rigidbody2D>();
         pos = transform.position;
@@ -56,7 +58,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             Time.timeScale = 0.0f;
             PauseMenu.SetActive(true);
-            Cursor.visible = true;
+            //Cursor.visible = true;
         }
 
 
