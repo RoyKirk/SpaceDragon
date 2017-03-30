@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public int playerId = 0;
     public Transform pivot;
-    public GameObject reticle;
+    //public GameObject reticle;
     public GameObject gravityArrow;
     public GameObject playerCamera;
     public GameObject bullet;
@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour {
     void Start () {
 
         //Cursor.visible = false;
-        Cursor.SetCursor(cursorTex,new Vector2(0.5f,0.5f), CursorMode.Auto);
+        Cursor.SetCursor(cursorTex,new Vector2(cursorTex.width / 2, cursorTex.height / 2), CursorMode.ForceSoftware);
 
         rb2D = GetComponent<Rigidbody2D>();
         pos = transform.position;
@@ -67,12 +67,17 @@ public class PlayerMovement : MonoBehaviour {
         scoreText.text = blockCount.ToString();
         metalText.text = metalCount.ToString();
         //Fire bullet
+        Vector2 cursorInWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        Vector2 aimDirection = cursorInWorldPos - new Vector2(transform.position.x, transform.position.y);
+        aimDirection.Normalize();
+
         if (player.GetButton("Fire") && fireTimer>=fireTime)
         {
             GameObject temp = (GameObject)(Instantiate(bullet, bulletSpawn.transform.position, transform.rotation));
             GameObject temp2 = (GameObject)(Instantiate(muzzleFlash, bulletSpawn.transform.position, transform.rotation));
             temp2.transform.parent = bulletSpawn.transform;
-            Vector3 direction = reticle.transform.position - transform.position;
+            Vector3 direction = aimDirection;
             temp.transform.up = new Vector3(direction.normalized.x, direction.normalized.y, 0);
             temp2.transform.up = temp.transform.up;
             temp.GetComponent<Rigidbody2D>().velocity = rb2D.velocity;//.magnitude * temp.transform.up;
@@ -145,39 +150,40 @@ public class PlayerMovement : MonoBehaviour {
         {
             rb2D.velocity = rb2D.velocity.normalized * terminalVelocity;
         }
-        
+
         //Aiming
-        if (((Vector2)(reticle.transform.localPosition)).magnitude <= cursorMaxDis)
-        {
-            reticle.transform.localPosition += new Vector3(player.GetAxis("Aim Horizontal"), player.GetAxis("Aim Vertical"), 0);
-            if (((Vector2)(reticle.transform.localPosition)).magnitude > cursorMaxDis)
-            {
-                //reticle.transform.localPosition = new Vector3(pos.x, pos.y, reticle.transform.localPosition.z);
-                reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x * cursorMaxDis, reticle.transform.localPosition.normalized.y * cursorMaxDis, reticle.transform.localPosition.z);
-            }
-        }
-        else
-        {
-            reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x * cursorMaxDis, reticle.transform.localPosition.normalized.y * cursorMaxDis, reticle.transform.localPosition.z);
-        }
+
+        //if (((Vector2)(reticle.transform.localPosition)).magnitude <= cursorMaxDis)
+        //{
+        //    reticle.transform.localPosition += new Vector3(player.GetAxis("Aim Horizontal"), player.GetAxis("Aim Vertical"), 0);
+        //    if (((Vector2)(reticle.transform.localPosition)).magnitude > cursorMaxDis)
+        //    {
+        //        //reticle.transform.localPosition = new Vector3(pos.x, pos.y, reticle.transform.localPosition.z);
+        //        reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x * cursorMaxDis, reticle.transform.localPosition.normalized.y * cursorMaxDis, reticle.transform.localPosition.z);
+        //    }
+        //}
+        //else
+        //{
+        //    reticle.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x * cursorMaxDis, reticle.transform.localPosition.normalized.y * cursorMaxDis, reticle.transform.localPosition.z);
+        //}
 
         //Gun Position
-        gun.transform.localPosition = new Vector3(reticle.transform.localPosition.normalized.x, reticle.transform.localPosition.normalized.y, 0) *0.5f;
-        Vector3 gunDir = (reticle.transform.position - transform.position).normalized;
-        gun.transform.forward = new Vector3(gunDir.x, gunDir.y, 0);
+        gun.transform.localPosition = new Vector3(aimDirection.x, aimDirection.y, 0) *0.5f;
+        //Vector3 gunDir = (new Vector3(aimDirection.x, aimDirection.y, 0) - transform.position).normalized;
+        gun.transform.forward = new Vector3(aimDirection.x, aimDirection.y, 0);
 
 
         //Camera Movement
-        Vector3 midPoint = reticle.transform.localPosition.normalized * reticle.transform.localPosition.magnitude / 2;
-        midPoint = new Vector3(midPoint.x, midPoint.y, playerCamera.transform.localPosition.z);
-        if ((midPoint - playerCamera.transform.localPosition).magnitude > 0)
-        {
-            playerCamera.transform.localPosition += (midPoint - playerCamera.transform.localPosition) * cameraSpeed;
-        }
-        else
-        {
-            playerCamera.transform.localPosition = midPoint;
-        }
+        //Vector3 midPoint = reticle.transform.localPosition.normalized * reticle.transform.localPosition.magnitude / 2;
+        //midPoint = new Vector3(midPoint.x, midPoint.y, playerCamera.transform.localPosition.z);
+        //if ((midPoint - playerCamera.transform.localPosition).magnitude > 0)
+        //{
+        //    playerCamera.transform.localPosition += (midPoint - playerCamera.transform.localPosition) * cameraSpeed;
+        //}
+        //else
+        //{
+        //    playerCamera.transform.localPosition = midPoint;
+        //}
 
         //Change pivot
         //asteroids need to have player as child
