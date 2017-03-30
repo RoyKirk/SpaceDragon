@@ -77,16 +77,17 @@ public class PlayerMovement : MonoBehaviour {
             fireTimer = 0;
         }
 
-        Vector3 downDirection = pivot.position - transform.position;
+        Vector3 downDirection =  pivot.position - transform.position;
+        
         downDirection.Normalize();
-        transform.up = -downDirection;
+        transform.rotation = Quaternion.LookRotation(Vector3.forward, -downDirection);
         //Ground check
         RaycastHit2D groundCheck = Physics2D.Raycast(transform.position, new Vector2(downDirection.x,downDirection.y),atmosphereRadius);
         Debug.DrawRay(transform.position, 100*downDirection);
         if (groundCheck.collider != null)
         {
             if (groundCheck.distance <= 1.0f)
-            {
+            { 
                 onGround = true;
             }
             else
@@ -141,7 +142,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             rb2D.velocity = rb2D.velocity.normalized * terminalVelocity;
         }
-
+        
         //Aiming
         if (((Vector2)(reticle.transform.localPosition)).magnitude <= cursorMaxDis)
         {
