@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Rewired;
-using UnityEngine.UI;
+using UnityEngine.UI; 
 
 public class PlayerMovement : MonoBehaviour {
 
