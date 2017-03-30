@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour {
     private Player player;
     public float moveSpeed = 4;
     public float terminalVelocity = 1;
+    public float atmosphereDrag = 0.9f;
     public int blockCount = 0;
     public int metalCount = 0;
     public Text scoreText;
@@ -111,7 +112,7 @@ public class PlayerMovement : MonoBehaviour {
             }
             else
             {
-                localVel = new Vector2(localVel.x * 0.9f, localVel.y);
+                localVel = new Vector2(localVel.x * atmosphereDrag, localVel.y);
             }
 
             rb2D.velocity = transform.TransformDirection(localVel);
