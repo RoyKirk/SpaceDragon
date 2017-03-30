@@ -27,35 +27,35 @@ public class BlockScript : MonoBehaviour
             {
                 Destroy(Instantiate(pickUpObj[typeValue], transform.position, transform.rotation, transform.parent), dropDuration);
             }
-            
+            GetComponentInParent<fragmentCube>().UpdateFragments(this.gameObject);
             //give resource to player
             Destroy(gameObject);
         }
     }
 
-    public void UpdateMat(int newType)
-    {
-        typeValue = newType;
-        switch (newType)
-        {
-            case 0://grey dirt
-                randMesh = Random.Range(0, DirtMesh.Length);
-                gameObject.GetComponent<MeshFilter>().mesh = DirtMesh[randMesh];
-                break;
-            case 1://metal
-                randMesh = Random.Range(0, MetalMesh.Length);
-                gameObject.GetComponent<MeshFilter>().mesh = MetalMesh[0];
-                break;
-            case 2://ammo
-                randMesh = Random.Range(0, AmmoMesh.Length);
-                gameObject.GetComponent<MeshFilter>().mesh = AmmoMesh[randMesh];
-                break;
-            case 3://unbreakable
-                randMesh = Random.Range(0, UnbreakableMesh.Length);
-                gameObject.GetComponent<MeshFilter>().mesh = DirtMesh[randMesh];
-                break;
-        }
-    }
+    //public void UpdateMat(int newType)
+    //{
+    //    typeValue = newType;
+    //    switch (newType)
+    //    {
+    //        case 0://grey dirt
+    //            randMesh = Random.Range(0, DirtMesh.Length);
+    //            gameObject.GetComponent<MeshFilter>().mesh = DirtMesh[randMesh];
+    //            break;
+    //        case 1://metal
+    //            randMesh = Random.Range(0, MetalMesh.Length);
+    //            gameObject.GetComponent<MeshFilter>().mesh = MetalMesh[0];
+    //            break;
+    //        case 2://ammo
+    //            randMesh = Random.Range(0, AmmoMesh.Length);
+    //            gameObject.GetComponent<MeshFilter>().mesh = AmmoMesh[randMesh];
+    //            break;
+    //        case 3://unbreakable
+    //            randMesh = Random.Range(0, UnbreakableMesh.Length);
+    //            gameObject.GetComponent<MeshFilter>().mesh = DirtMesh[randMesh];
+    //            break;
+    //    }
+    //}
 
     public void takeDMG(float dmg, bool drop)
     {
@@ -64,5 +64,10 @@ public class BlockScript : MonoBehaviour
         DROP = drop;
         //instantiate a particle effect.
         //drop a pickup when hp <= 0
+    }
+
+    public void upgrade()
+    {
+        GetComponentInParent<fragmentCube>().Upgrade();
     }
 }
