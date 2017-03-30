@@ -21,13 +21,13 @@ public class TurretConstructor : MonoBehaviour
         transform.position += transform.up * bulletSpeed * Time.deltaTime;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Block")
         {
             //Upgrade the block
-
-            
+            collision.gameObject.GetComponent<fragmentCube>().Upgrade();
+            Destroy(this.gameObject);
             //if (collision.gameObject.GetComponent<fragmentCube>().typeValue <= 2)
             //{
             //    collision.gameObject.GetComponent<fragmentCube>().shot = true;
@@ -40,6 +40,8 @@ public class TurretConstructor : MonoBehaviour
         }
         else if (collision.gameObject.tag == "Fragment")
         {
+            collision.gameObject.GetComponent<BlockScript>().upgrade();
+            Destroy(this.gameObject);
             //destroy the fragments and create a block connecting to blocks.
 
             //dmg block and take dmg

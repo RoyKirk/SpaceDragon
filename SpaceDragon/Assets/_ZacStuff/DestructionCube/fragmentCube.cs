@@ -55,6 +55,7 @@ public class fragmentCube : MonoBehaviour
 
 
         hp = fragmentObj.Length;
+        GetComponent<BoxCollider2D>().enabled = false;
         //blockTiers[1].SetupTier(3, )
 
         //iterationVector = new Vector3(transform.position.x - (transform.localScale.x / 2) + fragmentObj.transform.localScale.x / fragmentPieces / 2, transform.position.y - (transform.localScale.y / 2) + fragmentObj.transform.localScale.y / fragmentPieces / 2, transform.position.z);// - (transform.localScale / 2) + fragmentObj.transform.localScale / 2);
@@ -164,6 +165,7 @@ public class fragmentCube : MonoBehaviour
                 //check if we have enough resources
                 if(PM.blockCount >= 3)
                 {
+                    PM.blockCount -= 3;
                     //yes-> upgrade to next tier
                     UpdateTier(1);
                 }
@@ -178,6 +180,7 @@ public class fragmentCube : MonoBehaviour
                 if (PM.blockCount >= (9 - fragmentObj.Length))
                 {
                     //yes-> Destroy this and replace with new chunk
+                    PM.blockCount -= (9 - fragmentObj.Length);
                     GetComponentInParent<CreatePlanet>().ReplaceChunk(this.gameObject);
                 }
                 else
@@ -194,6 +197,7 @@ public class fragmentCube : MonoBehaviour
                 if (PM.metalCount >= 1)
                 {
                     //yes-> upgrade to next tier
+                    PM.metalCount -= 1;
                     UpdateTier(1);
                 }
                 else
@@ -207,6 +211,7 @@ public class fragmentCube : MonoBehaviour
                 if (PM.blockCount >= (hp - blockTiers[currentTier].MaxHp))
                 {
                     //yes-> set current Hp to max
+                    PM.blockCount -= (int)(hp - blockTiers[currentTier].MaxHp);
                     hp = blockTiers[currentTier].MaxHp;
                 }
                 else
@@ -229,6 +234,7 @@ public class fragmentCube : MonoBehaviour
                     if (PM.metalCount >= 1)
                     {
                         //yes-> upgrade to next tier
+                        PM.metalCount -= 1;
                         UpdateTier(1);
                     }
                     else
@@ -244,6 +250,7 @@ public class fragmentCube : MonoBehaviour
                 if (PM.metalCount >= 1)
                 {
                     //yes-> set current Hp to max
+                    PM.metalCount -= 1;
                     hp = blockTiers[currentTier].MaxHp;
                 }
                 else
@@ -264,8 +271,12 @@ public class fragmentCube : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        else
+        {
+            UpdateTier(-1);
+        }
 
-        UpdateTier(-1);
+        
         //go down a tier and update new stats / material.
     }
 
@@ -281,6 +292,7 @@ public class fragmentCube : MonoBehaviour
         if(currentTier == 0)
         {
             //enable childed fragments.
+            GetComponent<BoxCollider2D>().enabled = false;
             for(int i = 0; i < fragmentObj.Length;i++)
             {
                 fragmentObj[i].SetActive(true);
@@ -288,6 +300,7 @@ public class fragmentCube : MonoBehaviour
         }
         if (currentTier == 1)
         {
+            GetComponent<BoxCollider2D>().enabled = true;
             //disable childed fragments.
             for (int i = 0; i < fragmentObj.Length; i++)
             {
