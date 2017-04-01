@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour {
         //Fire bullet
         Vector2 cursorInWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        Vector2 aimDirection = cursorInWorldPos - new Vector2(transform.position.x, transform.position.y);
+        Vector2 aimDirection = cursorInWorldPos - new Vector2(bulletSpawn.transform.position.x, bulletSpawn.transform.position.y);
         aimDirection.Normalize();
 
         if (player.GetButton("Fire") && fireTimer>=fireTime)
@@ -85,6 +85,7 @@ public class PlayerMovement : MonoBehaviour {
             fireTimer = 0;
         }
 
+        //character orientation
         Vector3 downDirection =  pivot.position - transform.position;
         
         downDirection.Normalize();
@@ -168,9 +169,10 @@ public class PlayerMovement : MonoBehaviour {
         //}
 
         //Gun Position
-        gun.transform.localPosition = new Vector3(aimDirection.x, aimDirection.y, 0) *0.5f;
+        gun.transform.position = transform.position + new Vector3(aimDirection.x, aimDirection.y, 0) *0.5f;
         //Vector3 gunDir = (new Vector3(aimDirection.x, aimDirection.y, 0) - transform.position).normalized;
-        gun.transform.forward = new Vector3(aimDirection.x, aimDirection.y, 0);
+        gun.transform.rotation = Quaternion.LookRotation(aimDirection, Vector3.right);
+        //gun.transform.forward = new Vector3(aimDirection.x, aimDirection.y, 0);
 
 
         //Camera Movement
