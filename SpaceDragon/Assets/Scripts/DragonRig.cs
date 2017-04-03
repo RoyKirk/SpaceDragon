@@ -18,7 +18,7 @@ public class DragonRig : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-		
+		health = dragonPivot.maxHealth;
 	}
 
     public void AssignReferences()
@@ -30,6 +30,10 @@ public class DragonRig : MonoBehaviour
 
 	public void TakeDamage(int damage)
 	{
-		
+		health -= damage;
+		if (health <= 0) 
+		{
+			dragonPivot.DespawnDragon ();
+		}
 	}
 }

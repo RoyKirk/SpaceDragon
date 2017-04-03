@@ -23,7 +23,9 @@ public class DragonMovement : MonoBehaviour
 	public float dragonDuration;
 	float dragonLifetime;
 
-	public int maxHealth;
+	public int startingHealth;
+	public float healthMultiplier;
+	[HideInInspector] public int maxHealth;
 
 
 	// Use this for initialization
@@ -32,6 +34,7 @@ public class DragonMovement : MonoBehaviour
 		spawnCooldown = spawnTimer;
 		dragonLifetime = dragonDuration;
 		velocity.x = 1;
+		maxHealth = startingHealth;
 	}
 	
 	// Update is called once per frame
@@ -94,8 +97,9 @@ public class DragonMovement : MonoBehaviour
 		}
 	}
 
-	void DespawnDragon()
+	public void DespawnDragon()
 	{
+		maxHealth = (int)(maxHealth * healthMultiplier);
 		Destroy (dragonClone.gameObject);
 		spawnCooldown = spawnTimer;
 		isSpawned = false;
