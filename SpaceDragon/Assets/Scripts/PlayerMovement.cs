@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public int playerId = 0;
     public Transform pivot;
+    public Transform planet;
     //public GameObject reticle;
     public GameObject gravityArrow;
     public GameObject playerCamera;
@@ -38,6 +39,7 @@ public class PlayerMovement : MonoBehaviour {
     public GameObject PauseMenu;
     public GameObject DefeatMenu;
     public Texture2D cursorTex;
+
 
 
     // Use this for initialization
@@ -144,8 +146,8 @@ public class PlayerMovement : MonoBehaviour {
         //Movement with Terminal Velocity
         if (rb2D.velocity.magnitude <= terminalVelocity)
         {
-            rb2D.AddForce(transform.right * player.GetAxis("Move Horizontal") * moveSpeed);
-            rb2D.AddForce(transform.up * player.GetAxis("Move Vertical") * moveSpeed);
+            rb2D.AddForce(playerCamera.transform.right * player.GetAxis("Move Horizontal") * moveSpeed);
+            rb2D.AddForce(playerCamera.transform.up * player.GetAxis("Move Vertical") * moveSpeed);
         }
         else
         {
@@ -176,6 +178,8 @@ public class PlayerMovement : MonoBehaviour {
 
 
         //Camera Movement
+        playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y, playerCamera.transform.position.z);
+        playerCamera.transform.rotation = Quaternion.LookRotation(Vector3.forward, transform.position - planet.position);
         //Vector3 midPoint = reticle.transform.localPosition.normalized * reticle.transform.localPosition.magnitude / 2;
         //midPoint = new Vector3(midPoint.x, midPoint.y, playerCamera.transform.localPosition.z);
         //if ((midPoint - playerCamera.transform.localPosition).magnitude > 0)
