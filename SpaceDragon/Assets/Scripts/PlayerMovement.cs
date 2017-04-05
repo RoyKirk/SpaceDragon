@@ -112,21 +112,21 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         //Atmosphere
-        if (groundCheck.collider != null && player.GetAxis("Move Horizontal") == 0 && player.GetAxis("Move Vertical") == 0)
-        {
-            Vector2 localVel = transform.InverseTransformDirection(rb2D.velocity);
+        //if (groundCheck.collider != null && player.GetAxis("Move Horizontal") == 0 && player.GetAxis("Move Vertical") == 0)
+        //{
+        //    Vector2 localVel = transform.InverseTransformDirection(rb2D.velocity);
             
-            if (localVel.x <= 0.1)
-            {
-                localVel = new Vector2(0, localVel.y);
-            }
-            else
-            {
-                localVel = new Vector2(localVel.x * atmosphereDrag, localVel.y);
-            }
+        //    if (localVel.x <= 0.1)
+        //    {
+        //        localVel = new Vector2(0, localVel.y);
+        //    }
+        //    else
+        //    {
+        //        localVel = new Vector2(localVel.x * atmosphereDrag * Time.deltaTime, localVel.y);
+        //    }
 
-            rb2D.velocity = transform.TransformDirection(localVel);
-        }
+        //    rb2D.velocity = transform.TransformDirection(localVel);
+        //}
 
 
         //Gravity
@@ -194,6 +194,27 @@ public class PlayerMovement : MonoBehaviour {
         //Change pivot
         //asteroids need to have player as child
 
+    }
+
+    public void FixedUpdate()
+    {
+        Vector3 downDirection = pivot.position - transform.position;
+        RaycastHit2D groundCheck = Physics2D.Raycast(transform.position, new Vector2(downDirection.x, downDirection.y), atmosphereRadius);
+        if (groundCheck.collider != null && player.GetAxis("Move Horizontal") == 0 && player.GetAxis("Move Vertical") == 0)
+        {
+            Vector2 localVel = transform.InverseTransformDirection(rb2D.velocity);
+
+            if (System.Math.Abs(localVel.x) <= 0.1)
+            {
+                localVel = new Vector2(0, localVel.y);
+            }
+            else
+            {
+                localVel = new Vector2(localVel.x * atmosphereDrag, localVel.y);
+            }
+
+            rb2D.velocity = transform.TransformDirection(localVel);
+        }
     }
 
     public void TakeDamage(int damage)
