@@ -52,6 +52,8 @@ public class fragmentCube : MonoBehaviour
         blockTiers = new Tier[numberOfTiers];
         blockTiers[0].SetupTier(9, DirtMesh[0]);
         blockTiers[1].SetupTier(3, MetalMesh[0]);
+        blockTiers[2].SetupTier(5, MetalMesh[1]);
+        blockTiers[3].SetupTier(2, MetalMesh[2]);
 
 
         hp = fragmentObj.Length;
@@ -225,7 +227,7 @@ public class fragmentCube : MonoBehaviour
             if(hp == blockTiers[currentTier].MaxHp)
             {
                 //check if we have enough resources
-                if(currentTier == blockTiers.Length)
+                if(currentTier == blockTiers.Length - 1)
                 {
                     //error already max tier
                 }

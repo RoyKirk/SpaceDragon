@@ -27,7 +27,15 @@ public class BlockScript : MonoBehaviour
             {
                 Destroy(Instantiate(pickUpObj[typeValue], transform.position, transform.rotation, transform.parent), dropDuration);
             }
-            GetComponentInParent<fragmentCube>().UpdateFragments(this.gameObject);
+            if(GetComponentInParent<fragmentCube>())
+            {
+                GetComponentInParent<fragmentCube>().UpdateFragments(this.gameObject);
+            }
+            else
+            {
+                GetComponentInParent<AsteroidCube>().UpdateFragments(this.gameObject);
+            }
+           
             //give resource to player
             Destroy(gameObject);
         }
