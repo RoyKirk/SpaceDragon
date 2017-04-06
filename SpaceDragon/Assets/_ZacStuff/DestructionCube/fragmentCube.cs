@@ -12,7 +12,7 @@ public class fragmentCube : MonoBehaviour
     //Vector3 iterationVector;
     //float iterationScale;
     public float hp = 9;
-    int currentTier = 0;
+    public int currentTier = 0;
 
 
     struct Tier
