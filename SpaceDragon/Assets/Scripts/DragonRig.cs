@@ -13,12 +13,13 @@ public class DragonRig : MonoBehaviour
     public DragonAttack starfallAttack;
     public Transform planet;
 
+	public int lives;
 	int health;
 
 	// Use this for initialization
 	void Start ()
     {
-		health = dragonPivot.maxHealth;
+		
 	}
 
     public void AssignReferences()
@@ -26,6 +27,7 @@ public class DragonRig : MonoBehaviour
 		plasmaAttack.target = player;
 		devestateAttack.target = planet;
 		starfallAttack.target = planet;
+		health = dragonPivot.maxHealth;
     }
 
 	public void TakeDamage(int damage)
@@ -33,7 +35,16 @@ public class DragonRig : MonoBehaviour
 		health -= damage;
 		if (health <= 0) 
 		{
-			dragonPivot.DespawnDragon ();
+			if (lives > 0) 
+			{
+				--lives;
+				dragonPivot.DespawnDragon ();
+			} 
+
+			else 
+			{
+				dragonPivot.Death ();
+			}
 		}
 	}
 }

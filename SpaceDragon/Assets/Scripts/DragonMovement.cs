@@ -19,6 +19,7 @@ public class DragonMovement : MonoBehaviour
 	float spawnCooldown;
 	bool isSpawned;
 	bool isLeaving;
+	bool isDead;
 
 	public float dragonDuration;
 	float dragonLifetime;
@@ -66,7 +67,8 @@ public class DragonMovement : MonoBehaviour
 	{
 		dragonClone = Instantiate (dragonPrefab, this.transform, false) as GameObject;
 		dragonClone.transform.position = spawnPos;
-        dragonClone.GetComponent<DragonRig>().player = playerPos;
+		dragonClone.GetComponent<DragonRig> ().dragonPivot = this;
+		dragonClone.GetComponent<DragonRig>().player = playerPos;
         dragonClone.GetComponent<DragonRig>().planet = this.transform;
         dragonClone.GetComponent<DragonRig>().AssignReferences();
         dragonLifetime = dragonDuration;
@@ -76,6 +78,11 @@ public class DragonMovement : MonoBehaviour
 
 	void MoveDragon()
 	{
+		if (isDead)
+		{
+			transform.RotateAround (dragonClone.transform.position, dragonClone.transform.rotation.eulerAngles, 10);
+		}
+
 		if (isLeaving)
 		{
 			dragonClone.transform.localPosition += velocity * moveSpeed * Time.deltaTime;
@@ -105,5 +112,10 @@ public class DragonMovement : MonoBehaviour
 		isSpawned = false;
 
 		transform.rotation = Quaternion.Euler(Vector3.zero);
+	}
+
+	public void Death()
+	{
+		isDead = true;
 	}
 }
